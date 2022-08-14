@@ -1,6 +1,6 @@
 {
     "name": "soundcloud-desktop",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "description": "plays music",
     "scripts": {
         "start": "electron .",
@@ -8,11 +8,17 @@
         "dist": "electron-builder --windows"
     },
     "devDependencies": {
+        "discord-rpc": "^4.0.1",
         "electron": "^20.0.2",
         "electron-builder": "^23.0.3"
     },
     "build": {
         "icon": "./icon.ico",
         "appId": "sebola.soundcloud"
+    },
+    "dependencies": {
+        "axios": "^0.27.2",
+        "discord-rpc": "^4.0.1",
+        "download": "^8.0.0"
     }
 }
