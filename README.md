@@ -8,8 +8,9 @@
 
 Log-in with ur email and password and restart
 
-- RPC (Discord activity) isn't working
-  DM me, Sebola#3461
+- RPC (Discord activity) isn't working  
+
+I need to invite you to Discord's Application Testers. You can open an issue requesting to add you or DM me, Sebola#3461
 
 ### Features
 
