@@ -1,5 +1,5 @@
 try {
-  const RPC = require("./rpc/lib/src/index.js");
+  const RPC = require("discord-rpc");
 
   const RPC_client_id = "642466808821186562";
 
