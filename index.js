@@ -72,7 +72,7 @@ async function checkUpdates() {
       });
 
       await download(
-        `https://github.com/Sebola3461/soundcloud-desktop/releases/download/Beta/soundcloud-desktop.Setup.${server_version}.exe`,
+        `https://github.com/Sebola3461/soundcloud-desktop/releases/download/Latest/soundcloud-desktop.Setup.${server_version}.exe`,
         path.resolve(__dirname + "/updater"),
         {
           filename: "install.exe",

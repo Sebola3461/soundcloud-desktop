@@ -35,6 +35,14 @@ try {
       .replace(`")`, "")
       .replace(/50x50/g, "500x500");
 
+    if (getDetails().state == 2)
+      return document
+        .querySelector(".profileHeaderInfo__avatar div.image span")
+        .style.backgroundImage.replace(`url("`, "")
+        .replace(`")`, "");
+
+    if (getDetails().state == 1) return "icon-big";
+
     return imageURL;
   }
 
@@ -48,7 +56,7 @@ try {
       : "https://soundcloud.com";
   }
 
-  async function setActivity() {
+  function getDetails() {
     const currentSongTitleElement = document.querySelector(
       ".playbackSoundBadge__title a span:last-of-type"
     );
@@ -66,40 +74,76 @@ try {
           .title
       : "";
 
+    if (location.pathname == "/search" && !isSongPlaying())
+      return {
+        state: 1,
+        text: "Searching a song",
+      };
+
+    if (
+      location.pathname.split("/").filter((p) => p != "").length == 1 &&
+      !isSongPlaying() &&
+      document.querySelector(".profileHeaderInfo__userName") &&
+      document.querySelector(".profileHeaderInfo__avatar div.image span")
+    )
+      return {
+        state: 2,
+        text: document.querySelector(".profileHeaderInfo__userName").innerText,
+      };
+
+    if (!currentSongArtistElement)
+      return {
+        state: 3,
+        text: "Idle",
+      };
+
+    return {
+      state: 0,
+      text: `${currentSongArtist} - ${currentSongTitle}`,
+    };
+  }
+
+  function getState() {
+    const currentSongArtistElement = document.querySelector(
+      ".playbackSoundBadge__titleContextContainer a"
+    );
+
+    const currentTimeElement = document.querySelector(
+      ".playbackTimeline__timePassed span:last-of-type"
+    );
+    const allTimeElement = document.querySelector(
+      ".playbackTimeline__duration span:last-of-type"
+    );
+
+    const currentTime = currentTimeElement
+      ? currentTimeElement.textContent
+      : "--:--";
+    const allTime = allTimeElement ? allTimeElement.textContent : "--:--";
+
+    if (!currentSongArtistElement) return undefined;
+
+    if (getDetails().state == 2) return "Browsing an user profile";
+
+    if (getDetails().state == 0)
+      return isSongPlaying() ? `Playing (${currentTime}/${allTime})` : "Paused";
+  }
+
+  async function setActivity() {
     console.log("rpc");
     if (!client) {
       return;
     }
 
-    function getState() {
-      const currentTimeElement = document.querySelector(
-        ".playbackTimeline__timePassed span:last-of-type"
-      );
-      const allTimeElement = document.querySelector(
-        ".playbackTimeline__duration span:last-of-type"
-      );
-
-      const currentTime = currentTimeElement
-        ? currentTimeElement.textContent
-        : "--:--";
-      const allTime = allTimeElement ? allTimeElement.textContent : "--:--";
-
-      if (!currentSongArtistElement) return undefined;
-
-      return isSongPlaying() ? `Playing (${currentTime}/${allTime})` : "Paused";
-    }
-
     client.setActivity({
-      details: currentSongArtistElement
-        ? `${currentSongArtist} - ${currentSongTitle}`
-        : "Searching for a song",
+      details: getDetails().text,
       state: getState(),
       largeImageKey: getAlbumImage(),
-      largeImageText: "Using Soundcloud desktop",
-      smallImageKey: getAlbumImage() == "icon-big" ? "" : "icon-circle",
+      largeImageText: "Using SoundCloud Desktop",
+      smallImageKey:
+        getAlbumImage() == "icon-big" ? "transparent" : "icon-circle",
       instance: false,
       buttons: [
-        { label: "Open in your browser", url: getSongURL() },
+        { label: "View song", url: getSongURL() },
         {
           label: "Get Soundcloud desktop",
           url: "https://github.com/Sebola3461/soundcloud-desktop",
