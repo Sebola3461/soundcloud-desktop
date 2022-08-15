@@ -6,7 +6,7 @@
 
 - Isn't connecting to my google account!
 
-Log-in with ur email and password and restart
+Log-in with ur email and password and restart. After some seconds a popup will appear on top right
 
 - RPC (Discord activity) isn't working  
 
