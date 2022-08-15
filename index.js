@@ -48,7 +48,9 @@ function createWindow() {
 }
 
 async function checkUpdates() {
-  const server_package = await await axios(
+  console.log("Checking updates...");
+
+  const server_package = await axios(
     "https://raw.githubusercontent.com/Sebola3461/soundcloud-desktop/main/package.json"
   );
   const server_version = server_package.data.version;
@@ -67,9 +69,13 @@ async function checkUpdates() {
           "A new version is being downloaded! The program will restart after the download is completed.",
       });
 
-      readdirSync(path.resolve(__dirname + `/updater`)).forEach((file) => {
-        unlinkSync(path.resolve(__dirname + `/updater/${file}`));
-      });
+      try {
+        readdirSync(path.resolve(__dirname + `/../updater`)).forEach((file) => {
+          unlinkSync(path.resolve(__dirname + `/../updater/${file}`));
+        });
+      } catch (e) {
+        console.error(e);
+      }
 
       await download(
         `https://github.com/Sebola3461/soundcloud-desktop/releases/download/Latest/soundcloud-desktop.Setup.${server_version}.exe`,
